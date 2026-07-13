@@ -1,0 +1,17 @@
+# Git
+.git
+.gitignore
+
+bin/
+dist/
+
+*.log
+
+# Environment
+.env
+
+# Docker exports
+*.tar
+*.tar.gz
+
+cmd/test/main.go
