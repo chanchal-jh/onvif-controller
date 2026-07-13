@@ -56,28 +56,6 @@ Supports PTZ camera actions:
 
 ---
 
-# Installation
-
-Clone repository:
-
-```bash
-git clone https://tvmgit.thinkpalm.info/netvire/platform/edge/onvif-edge-controller.git
-```
-
-Go to project:
-
-```bash
-cd onvif-edge-controller
-```
-
-Install dependencies:
-
-```bash
-go mod tidy
-```
-
----
-
 # Dependency Notes
 
 This project uses a locally patched version of the ONVIF PTZ library:
