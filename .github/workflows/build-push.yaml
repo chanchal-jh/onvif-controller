@@ -39,8 +39,6 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ${{ vars.IMAGE_NAME }}:latest
-            ${{ vars.IMAGE_NAME }}:${{ steps.version.outputs.semver }}
             ${{ vars.IMAGE_NAME }}:${{ steps.version.outputs.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
