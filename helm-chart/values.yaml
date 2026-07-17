@@ -14,6 +14,16 @@ serviceAccount:
   create: false
   name: ""
 
+env:
+  - name: APP_PORT
+    value: "8090"
+
+  - name: API_USERNAME
+    value: "netvire"
+
+  - name: API_PASSWORD
+    value: "apisecret123"
+
 imagePullSecrets: []
 
 livenessProbe:
