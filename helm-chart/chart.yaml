@@ -1,0 +1,7 @@
+apiVersion: v2
+name: onvif-camera-controller
+description: Helm chart for onvif camera controller application
+type: application
+
+version: 0.1.0
+appVersion: "1.0.0"
