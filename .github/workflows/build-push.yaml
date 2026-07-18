@@ -11,7 +11,8 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-
+    outputs:
+      image-tag: ${{ steps.version.outputs.version }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -42,3 +43,47 @@ jobs:
             ${{ vars.IMAGE_NAME }}:${{ steps.version.outputs.version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  
+
+  update-helm-chart:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout helm chart repo
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Update image tag in values.yaml
+        run: |
+          yq -i '.image.tag = "${{ needs.build-and-push.outputs.image-tag }}"' helm-chart/values.yaml
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'helm-chart/values.yaml'
+          message: "Update image.tag with new tag ${{ needs.build-and-push.outputs.image-tag }}"
+
+          
+
+  deploy:
+    needs: update-helm-chart
+    runs-on: self-hosted
+    steps:
+
+      - name: Install argocd
+        shell: bash
+        run: |
+          curl -ksSL -o argocd https://argocd-server.argocd/download/argocd-linux-amd64
+          chmod +x argocd
+          sudo mv ./argocd /usr/local/bin/argocd
+
+      - name: Argocd app sync
+        shell: bash
+        run: |
+          argocd login argocd-server.argocd \
+            --insecure  \
+            --username admin \
+            --password  ${{ secrets.ARGOCD_PASSWORD }}
+          argocd app sync camera-controller
