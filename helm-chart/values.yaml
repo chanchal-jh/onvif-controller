@@ -1,37 +1,28 @@
 replicaCount: 1
-
 image:
   repository: chanchaljh/onvif-camera-controller
   pullPolicy: IfNotPresent
-  tag: "v1.0.0"
-
+  tag: "1.0.0"
 service:
   type: ClusterIP
   port: 8090
   targetPort: 8090
-
 serviceAccount:
   create: false
   name: ""
-
 env:
   - name: APP_PORT
     value: "8090"
-
   - name: API_USERNAME
     value: "netvire"
-
   - name: API_PASSWORD
     value: "apisecret123"
-
 imagePullSecrets: []
-
 livenessProbe:
   enabled: true
   path: /health
   initialDelaySeconds: 30
   periodSeconds: 10
-
 readinessProbe:
   enabled: true
   path: /health
